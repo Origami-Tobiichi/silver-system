@@ -3,4 +3,5 @@ image:
 
 tasks:
   - init: npm install
-  - command: npm start
+  - init: npm install qrcode-terminal
+  - command: node index.js
