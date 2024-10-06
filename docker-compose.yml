@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  webapp:
+     buid:
+     context: .
+     docker: Dockerfile
+    image: node:lts-buster
+    ports:
+      - "80:3000"  # Akses publik dari port 80 ke aplikasi yang berjalan di port 3000 di container
+      - "5000:5000"  # Akses pribadi pada port 5000 untuk komunikasi internal (opsional)
+    volumes:
+      - .:/code
+      - logvolume01:/var/log
+    links:
+      - redis
+  redis:
+    image: redis
+    command: npm start
+    environment:
+      NODE_ENV: development
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+volumes:
+  node_modules: {}
